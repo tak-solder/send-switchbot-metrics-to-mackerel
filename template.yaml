@@ -5,29 +5,48 @@ Description: >
 
   Sample SAM Template for send-switchbot-metrics-to-mackerel
 
+Parameters:
+  SwitchBotApiToken:
+    Type: String
+    Description: "SwitchBot API Token"
+  SwitchBotApiSecret:
+    Type: String
+    Description: "SwitchBot API Secret"
+  MackerelApiKey:
+    Type: String
+    Description: "Mackerel API Key"
+  MackerelService:
+    Type: String
+    Description: "Mackerel Service Name"
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 5
 
     # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
     LoggingConfig:
       LogFormat: JSON
 Resources:
-  HelloWorldFunction:
+  Meter:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello-world/
+      CodeUri: meter/
       Handler: app.lambdaHandler
       Runtime: nodejs20.x
       Architectures:
       - x86_64
       Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+        CloudWatchEvent:
+          Type: Schedule
           Properties:
-            Path: /hello
-            Method: get
+            Schedule: cron(*/5 * * * ? *)
+      Environment:
+        Variables:
+            SWITCHBOT_API_TOKEN: !Ref SwitchBotApiToken
+            SWITCHBOT_API_SECRET: !Ref SwitchBotApiSecret
+            MACKEREL_API_KEY: !Ref MackerelApiKey
+            MACKEREL_SERVICE: !Ref MackerelService
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
@@ -38,15 +57,9 @@ Resources:
         - app.ts
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: API Gateway endpoint URL for Prod stage for Hello World function
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: Hello World Lambda Function ARN
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+  MeterFunction:
+    Description: Meter Lambda Function ARN
+    Value: !GetAtt Meter.Arn
+  MeterIamRole:
+    Description: Implicit IAM Role created for Meter function
+    Value: !GetAtt MeterRole.Arn

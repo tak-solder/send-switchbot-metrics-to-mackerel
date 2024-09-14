@@ -209,3 +209,5 @@ $RECYCLE.BIN/
 
 .idea
 samconfig.toml
+
+devices.ts

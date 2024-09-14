@@ -4,7 +4,7 @@ version = 0.1
 
 [default]
 [default.global.parameters]
-stack_name = "send-switchbot-metrics-to-mackerel"
+parameter_overrides = "SwitchBotApiToken=YOUR_API_TOKEN SwitchBotApiSecret=YOUR_API_SECRET MackerelApiKey=YOUR_API_KEY MackerelService=SEND_METRICS_SERVICE_NAME"
 
 [default.build.parameters]
 cached = true
