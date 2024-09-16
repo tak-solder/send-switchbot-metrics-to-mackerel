@@ -18,6 +18,10 @@ Parameters:
   MackerelService:
     Type: String
     Description: "Mackerel Service Name"
+  MeterSchedule:
+    Type: String
+    Description: "Send Metrics Schedule for Meter"
+    Default: "cron(*/5 * * * ? *)"
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -40,7 +44,7 @@ Resources:
         CloudWatchEvent:
           Type: Schedule
           Properties:
-            Schedule: cron(*/5 * * * ? *)
+            Schedule: !Ref MeterSchedule
       Environment:
         Variables:
             SWITCHBOT_API_TOKEN: !Ref SwitchBotApiToken
