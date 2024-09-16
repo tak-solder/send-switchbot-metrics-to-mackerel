@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "sam build",
-    "invoke": "sam build  --build-in-source && sam local invoke"
+    "build": "sam build  --build-in-source",
+    "invoke": "npm run build && sam local invoke",
+    "deploy": "npm run build && sam deploy --guided"
   },
   "keywords": [],
   "author": "",
