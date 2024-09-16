@@ -12,7 +12,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "esbuild": "^0.23.1"
+    "esbuild": "^0.23.1",
+    "libs": "1.0.0"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",

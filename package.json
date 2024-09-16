@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "sam build",
-    "invoke": "sam build && sam local invoke"
+    "invoke": "sam build  --build-in-source && sam local invoke"
   },
   "keywords": [],
   "author": "",
