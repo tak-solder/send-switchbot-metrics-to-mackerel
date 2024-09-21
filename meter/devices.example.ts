@@ -1,7 +1,7 @@
 // Copy for use to meter/devices.ts
-import {MeterDevice} from "./type";
+import {Device} from 'libs/device';
 
-export const devices: MeterDevice[] = [
+export const devices: Device[] = [
   {
     // `Get device list API`で得られる温湿度計のdeviceId
     // Meter/Meter Plus/Outdoor Meter が利用可能
