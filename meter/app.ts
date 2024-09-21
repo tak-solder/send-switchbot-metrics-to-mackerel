@@ -13,9 +13,14 @@ export const lambdaHandler = async (event: EventBridgeHandler<"Scheduled Event",
       return [];
     }
 
+    const temperature = status.temperature;
+    const humidity = status.humidity;
+    const thi = 0.81 * temperature + 0.01 * humidity * (0.99 * temperature - 14.3) + 46.3;
+
     return [
-      {name: `switchbot.temperature.${device.name}`, time , value: status.temperature},
-      {name: `switchbot.humidity.${device.name}`, time, value: status.humidity},
+      {name: `switchbot.temperature.${device.name}`, time, value: temperature},
+      {name: `switchbot.humidity.${device.name}`, time, value: humidity},
+      {name: `switchbot.thi.${device.name}`, time, value: thi},
       {name: `switchbot.battery.${device.name}`, time, value: status.battery},
     ];
   }).flat();
