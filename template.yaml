@@ -22,6 +22,10 @@ Parameters:
     Type: String
     Description: "Send Metrics Schedule for Meter"
     Default: "cron(*/5 * * * ? *)"
+  PlugSchedule:
+    Type: String
+    Description: "Send Metrics Schedule for Meter"
+    Default: "cron(*/5 * * * ? *)"
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -59,7 +63,33 @@ Resources:
         Sourcemap: true
         EntryPoints:
         - app.ts
-
+  Plug:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: plug/
+      Handler: app.lambdaHandler
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      Events:
+        CloudWatchEvent:
+          Type: Schedule
+          Properties:
+            Schedule: !Ref PlugSchedule
+      Environment:
+        Variables:
+            SWITCHBOT_API_TOKEN: !Ref SwitchBotApiToken
+            SWITCHBOT_API_SECRET: !Ref SwitchBotApiSecret
+            MACKEREL_API_KEY: !Ref MackerelApiKey
+            MACKEREL_SERVICE: !Ref MackerelService
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+        - app.ts
 Outputs:
   MeterFunction:
     Description: Meter Lambda Function ARN
@@ -67,3 +97,9 @@ Outputs:
   MeterIamRole:
     Description: Implicit IAM Role created for Meter function
     Value: !GetAtt MeterRole.Arn
+  PlugFunction:
+    Description: Plug Lambda Function ARN
+    Value: !GetAtt Plug.Arn
+  PlugIamRole:
+    Description: Implicit IAM Role created for Plug function
+    Value: !GetAtt PlugRole.Arn
