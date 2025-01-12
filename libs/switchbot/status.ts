@@ -1,8 +1,16 @@
-import {Device, DeviceType, MeterDeviceType, MeterDeviceTypes, PlugDeviceType, PlugDeviceTypes} from "../device";
+import {
+  Device,
+  DeviceType,
+  MeterDeviceType,
+  MeterDeviceTypes,
+  PlugDevice,
+  PlugDeviceType,
+  PlugDeviceTypes
+} from "../device";
 import {fetchGet} from "./api";
 
-type DeviceStatus<TStatus> = {
-  device: Device;
+type DeviceStatus<TStatus, TDevice = Device> = {
+  device: TDevice;
   status?: StatusResponse<TStatus>;
 };
 
@@ -58,7 +66,7 @@ type PlugStatus = {
   electricCurrent: number;
 };
 
-type PlugDeviceStatus = DeviceStatus<PlugStatus>;
+type PlugDeviceStatus = DeviceStatus<PlugStatus, PlugDevice>;
 
 export const fetchPlugStatuses = async (devices: Device[]): Promise<PlugDeviceStatus[]> => {
   const promises = devices.map<Promise<PlugDeviceStatus>>(async (device) => {

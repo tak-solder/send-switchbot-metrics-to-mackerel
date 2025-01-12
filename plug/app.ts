@@ -13,11 +13,21 @@ export const lambdaHandler = async (event: EventBridgeHandler<"Scheduled Event",
             return [];
         }
 
-        return [
+      const metrics: ServiceMetric[] = [
             {name: `switchbot.plug.voltage.${device.name}`, time, value: status.voltage},
             {name: `switchbot.plug.weight.${device.name}`, time, value: status.weight},
             {name: `switchbot.plug.electricCurrent.${device.name}`, time, value: status.electricCurrent},
         ];
+
+      if (typeof device.thresholdWeight === 'number') {
+        metrics.push({
+          name: `switchbot.is_running.${device.name}.`,
+          time,
+          value: device.thresholdWeight < status.weight ? 1 : 0,
+        });
+      }
+
+      return metrics;
     }).flat();
 
     await sendServiceMetrics(metrics);
