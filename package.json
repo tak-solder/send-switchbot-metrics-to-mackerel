@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "sam build --build-in-source",
     "list-device": "npx tsx tools/list-device.mts",
+    "invoke:light": "npm run build Light && sam local invoke Light",
     "invoke:meter": "npm run build Meter && sam local invoke Meter",
     "invoke:plug": "npm run build Plug && sam local invoke Plug",
     "deploy": "npm run build && sam deploy --guided"
@@ -18,6 +19,7 @@
     "libs",
     "meter",
     "plug",
-    "tools"
+    "tools",
+    "light"
   ]
 }

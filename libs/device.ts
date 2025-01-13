@@ -14,4 +14,7 @@ export type MeterDeviceType = typeof MeterDeviceTypes[number];
 export const PlugDeviceTypes = ['Plug Mini (US)', 'Plug Mini (JP)'] as const;
 export type PlugDeviceType = typeof PlugDeviceTypes[number];
 
-export type DeviceType = MeterDeviceType | PlugDeviceType;
+export const LightDeviceTypes = ['Ceiling Light', 'Ceiling Light Pro', 'Strip Light', 'Color Bulb'] as const;
+export type LightDeviceType = typeof LightDeviceTypes[number];
+
+export type DeviceType = MeterDeviceType | PlugDeviceType | LightDeviceType;
