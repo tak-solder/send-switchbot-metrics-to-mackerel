@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "sam build --build-in-source",
+    "list-device": "npx tsx tools/list-device.mts",
     "invoke:meter": "npm run build Meter && sam local invoke Meter",
     "invoke:plug": "npm run build Plug && sam local invoke Plug",
     "deploy": "npm run build && sam deploy --guided"
@@ -16,6 +17,7 @@
   "workspaces": [
     "libs",
     "meter",
-    "plug"
+    "plug",
+    "tools"
   ]
 }

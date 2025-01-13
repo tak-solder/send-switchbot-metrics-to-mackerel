@@ -19,15 +19,10 @@ export const fetchGet = async <ResponseBody>(path: string) => {
     "t": t,
   };
 
-  console.log(switchbotApiUrl + path);
-  console.log(headers);
-
   const res = await fetch(switchbotApiUrl + path, {
     method: 'GET',
     headers,
   }).then(res => res.json());
-
-  console.log(res);
 
   if (res.statusCode !== 100) {
     throw new Error(`Response status was ${res.statusCode}: ${res.message}`);
