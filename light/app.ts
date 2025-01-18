@@ -13,13 +13,18 @@ export const lambdaHandler = async (event: EventBridgeHandler<"Scheduled Event",
       return [];
     }
 
+    const is_running = status.power === 'on' ? 1 : 0;
     const metrics: ServiceMetric[] = [
-      {name: `switchbot.is_running.${device.name}`, time, value: status.power === 'on' ? 1 : 0},
-      {name: `switchbot.light.brightness.${device.name}`, time, value: status.brightness},
+      {name: `switchbot.is_running.${device.name}`, time, value: is_running},
+      {name: `switchbot.light.brightness.${device.name}`, time, value: is_running ? status.brightness : 0},
     ];
 
     if (typeof status.colorTemperature === 'number') {
-      metrics.push({name: `switchbot.light.color_temperature.${device.name}`, time, value: status.colorTemperature});
+      metrics.push({
+        name: `switchbot.light.color_temperature.${device.name}`,
+        time,
+        value: is_running ? status.colorTemperature : 0
+      });
     }
 
     return metrics;
