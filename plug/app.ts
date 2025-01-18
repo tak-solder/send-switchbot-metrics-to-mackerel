@@ -21,7 +21,7 @@ export const lambdaHandler = async (event: EventBridgeHandler<"Scheduled Event",
 
       if (typeof device.thresholdWeight === 'number') {
         metrics.push({
-          name: `switchbot.is_running.${device.name}.`,
+          name: `switchbot.is_running.${device.name}`,
           time,
           value: device.thresholdWeight < status.weight ? 1 : 0,
         });
